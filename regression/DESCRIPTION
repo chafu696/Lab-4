@@ -1,0 +1,12 @@
+Package: regression
+Type: Package
+Title: linear regression models
+Version: 0.1.0
+Data: 2020-09-20
+Author: Chao Fu & Michael Bailey
+Maintainer: Chao Fu <neu_fuchao@163.com>
+Description: A package contains a funciton to implement linear algebra with linear regression models.
+License: GPL-3
+Depends: R(>= 4.0.0)
+Encoding: UTF-8
+LazyData: true
