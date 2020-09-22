@@ -57,45 +57,54 @@ plot.linreg <- function(x){
   Fitted_value <- x$a2
   Residual <- x$a3
   Resivar <- sqrt(abs(Residual / sd(Residual)))
-  gg3 <- data.frame(Fitted_value, Residual)
-  gg4 <- data.frame(Fitted_value, Resivar)
+  outliers <- function(c) {
+    Q1 <- quantile(c, probs=0.25)
+    Q3 <- quantile(c, probs=0.75)
+    IQR <- Q3-Q1
+    index <- ifelse(c > Q3+1.5*IQR, c, 
+                    ifelse(c < Q1-1.5*IQR, c, NA))
+    return(index)
+  }
+  outliers1 <- outliers(Residual)
+  outliers2 <- outliers(Resivar)
+  gg3 <- data.frame(Fitted_value, Residual, outliers1)
+  gg4 <- data.frame(Fitted_value, Resivar, outliers2)
+  
   plot1 <- ggplot(gg3,aes(x = Fitted_value, y = Residual)) +
     geom_point(aes(x = Fitted_value, y = Residual), size = 5, shape = 1) +
-    labs(x = "Fitted values\n lm(Petal.Length~Species)", y = "Residuals", title = "Residuals vs Fitted") +
+    labs(x = "Fitted values\n linreg(Petal.Length~Species)", y = "Residuals", title = "Residuals vs Fitted") +
     theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank()) +
     theme(plot.title = element_text(hjust = 0.5)) +
-    stat_summary(fun = median, color = "red", geom = "line", size=1)
-    print(plot1)
-
-    plot2 <- ggplot(gg4, aes(x = Fitted_value, y = Resivar)) +
+    stat_summary(fun = median, color = "red", geom = "line", size=1) +
+    geom_text(aes(label=outliers1), hjust=1, na.rm=TRUE)
+  print(plot1)
+  
+  plot2 <- ggplot(gg4, aes(x = Fitted_value, y = Resivar)) +
     geom_point(size = 5, shape = 1) +
-    labs(x = "Fitted values\n lm(Pental.Length~Species)", y = expression(sqrt("|Standardized residuals|")) ,    title = "Scale-Location") +
+    labs(x = "Fitted values\n lm(Petal.Length~Species)", y = expression(sqrt("|Standardized residuals|")) ,    title = "Scale-Location") +
     theme(panel.grid.major = element_blank(),panel.grid.minor = element_blank()) +
     theme(plot.title = element_text(hjust = 0.5)) +
-    stat_summary(fun = mean, color = "red", geom = "line", size=1)
-    print(plot2)
+    stat_summary(fun = mean, color = "red", geom = "line", size=1) +
+    geom_text(aes(label=outliers1), hjust=1, na.rm=TRUE)
+  print(plot2)
 }
- resid <- function(x){
-   UseMethod("resid")
+resid <- function(x){
+  UseMethod("resid")
 }
 resid.linreg <- function(x){
-  cat(x$a3, "\n")
+  x$a3
 }
 pred <- function(x){
   UseMethod("pred")
 }
 pred.linreg <- function(x){
-  cat(x$a2, "\n")
+  x$a2
 }
-coef <- function(x){
-  UseMethod("coef")
-}
+
 coef.linreg <- function(x){
-  cat(x$a1, "\n")
+  x$a1
 }
-summary <- function(x){
-  UseMethod("summary")
-}
+
 summary.linreg <- function(x){
   emotvect <- c("","","")
   mat1 <- (cbind(t(x$a1), sqrt(x$a6), t(x$a7), t(x$a8), emotvect))
