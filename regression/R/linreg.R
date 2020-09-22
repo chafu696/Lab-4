@@ -8,11 +8,11 @@
 #'
 #'@param formula A formula
 #'
-#'@param data A matrix 
+#'@param data A matrix
 #'
 #'@return An object with of class linreg as an S3 class
 #'
-#'@example 
+#'@example
 #'
 #'@export
 
@@ -24,6 +24,7 @@ linreg <- function(formula, data){
   reco <- solve(t(mat2) %*% mat2) %*% t(mat2) %*% dy1
   fval <- mat2 %*% reco
   resi <- dy1 - fval
+  resi<-as.vector(resi)
   dfre <- length(dy1) - length(all.vars(formula))
   reva <- (t(resi) %*% resi)[1,1] / dfre
   vreco <- reva * solve(t(mat2) %*% mat2)
@@ -52,27 +53,27 @@ plot.linreg <- function(x){
   Resivar <- sqrt(abs(Residual / sd(Residual)))
   gg3 <- data.frame(Fitted_value, Residual)
   gg4 <- data.frame(Fitted_value, Resivar)
-  plot1 <- ggplot(gg3,aes(x = Fitted_value, y = Residual)) + 
-    geom_point(aes(x = Fitted_value, y = Residual), size = 5, shape = 1) + 
-    labs(x = "Fitted values\n lm(Petal.Length~Species)", y = "Residuals", title = "Residuals vs Fitted") + 
+  plot1 <- ggplot(gg3,aes(x = Fitted_value, y = Residual)) +
+    geom_point(aes(x = Fitted_value, y = Residual), size = 5, shape = 1) +
+    labs(x = "Fitted values\n lm(Petal.Length~Species)", y = "Residuals", title = "Residuals vs Fitted") +
     theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank()) +
-    theme(plot.title = element_text(hjust = 0.5)) + 
+    theme(plot.title = element_text(hjust = 0.5)) +
     stat_summary(fun = median, color = "red", geom = "line", size=1)
     print(plot1)
-  
-    plot2 <- ggplot(gg4, aes(x = Fitted_value, y = Resivar)) + 
-    geom_point(size = 5, shape = 1) + 
-    labs(x = "Fitted values\n lm(Pental.Length~Species)", y = expression(sqrt("|Standardized residuals|")) ,    title = "Scale-Location") + 
+
+    plot2 <- ggplot(gg4, aes(x = Fitted_value, y = Resivar)) +
+    geom_point(size = 5, shape = 1) +
+    labs(x = "Fitted values\n lm(Pental.Length~Species)", y = expression(sqrt("|Standardized residuals|")) ,    title = "Scale-Location") +
     theme(panel.grid.major = element_blank(),panel.grid.minor = element_blank()) +
-    theme(plot.title = element_text(hjust = 0.5)) + 
+    theme(plot.title = element_text(hjust = 0.5)) +
     stat_summary(fun = mean, color = "red", geom = "line", size=1)
-    print(plot2) 
+    print(plot2)
 }
-resid <- function(x){
-  UseMethod("resid")
+ resid <- function(x){
+   UseMethod("resid")
 }
 resid.linreg <- function(x){
-  cat(x$a3, "\n")
+  return(x$a3, "\n")
 }
 pred <- function(x){
   UseMethod("pred")
