@@ -1,4 +1,4 @@
 library(testthat)
 library(regression)
 
-test_check(regression)
+test_check("regression")
