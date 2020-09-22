@@ -37,6 +37,7 @@ attr(v, "class") <- "linreg"
 }
 
 linlist <- linreg(Petal.Length ~ Species, data = iris)
+
 print.linreg <- function(x){
   coeff <- x$a1
   cat("Call:", "\n")
@@ -67,8 +68,14 @@ plot.linreg <- function(x){
     stat_summary(fun = mean, color = "red", geom = "line", size=1)
     print(plot2) 
 }
+resid <- function(x){
+  UseMethod("resid")
+}
 resid.linreg <- function(x){
   cat(x$a3, "\n")
+}
+pred <- function(x){
+  UseMethod("pred")
 }
 pred.linreg <- function(x){
   cat(x$a2, "\n")
