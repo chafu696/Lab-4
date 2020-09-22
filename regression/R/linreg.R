@@ -1,6 +1,7 @@
 #'This is a description of linreg function
 #
 #'@title linreg
+#'@name linreg
 #'
 #'@description This function creates a multiple regression model to handle linear regression.
 #'
@@ -12,7 +13,12 @@
 #'
 #'@return An object with of class linreg as an S3 class
 #'
+#'@usage linreg(y ~ x, data)
+#'
 #'@example
+#' linreg(Petal.Length ~ Species, data = iris)
+#'
+#'@import ggplot2
 #'
 #'@export
 
@@ -32,7 +38,7 @@ linreg <- function(formula, data){
   tcoe <- reco / sqrt(vreco1)
   pcoe <- pt(tcoe, dfre)
   rtex <- paste(deparse(match.call()))
-  v <- list(a1 = t(reco), a2 = fval, a3 = resi, a4 =reva, a5 = vreco, a6 = vreco1, a7 = t(tcoe), a8 = t(pcoe), a9 = rtex)
+  v <- list(a1 = t(reco), a2 = fval, a3 = resi, a4 =reva, a5 = vreco, a6 = vreco1, a7 = t(tcoe), a8 = t(pcoe), a9 = rtex, a10 = dfre)
 attr(v, "class") <- "linreg"
   return(v)
 }
@@ -73,11 +79,28 @@ plot.linreg <- function(x){
    UseMethod("resid")
 }
 resid.linreg <- function(x){
-  return(x$a3, "\n")
+  cat(x$a3, "\n")
 }
 pred <- function(x){
   UseMethod("pred")
 }
 pred.linreg <- function(x){
   cat(x$a2, "\n")
+}
+coef <- function(x){
+  UseMethod("coef")
+}
+coef.linreg <- function(x){
+  cat(x$a1, "\n")
+}
+summary <- function(x){
+  UseMethod("summary")
+}
+summary.linreg <- function(x){
+  emotvect <- c("","","")
+  mat1 <- (cbind(t(x$a1), sqrt(x$a6), t(x$a7), t(x$a8), emotvect))
+  print.table(mat1)
+  cat(sqrt(x$a4), "\n")
+  cat('on')
+  cat(x$a10, "\n")
 }
