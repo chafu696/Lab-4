@@ -38,16 +38,33 @@ attr(v, "class") <- "linreg"
 
 linlist <- linreg(Petal.Length ~ Species, data = iris)
 print.linreg <- function(x){
-  coeff <- linlist$a1
+  coeff <- x$a1
   cat("Call:", "\n")
-  cat(linlist$a9, "\n")
+  cat(x$a9, "\n")
   cat("Coefficients:", "\n")
   print(coeff)
 }
 
 plot.linreg <- function(x){
-  Fitted_value <- linlist$a2
-  Residual <- linlist$a3
+  Fitted_value <- x$a2
+  Residual <- x$a3
+  Resivar <- sqrt(abs(Residual / sd(Residual)))
   gg3 <- data.frame(Fitted_value, Residual)
-  plot1 <- ggplot(gg3, aes(x = Fitted_value, y = Residual)) + geom_point(size = 5, shape = 1)+ scale_y_continuous(limits = c(-1.5,1.5), breaks=seq(-1.5,1.5,1)) + labs(x = "Fitted values\n lm(Pental.Length~Species)", y = "Residuals", title = "Residuals vs Fitted") + theme(plot.title = element_text(hjust = 0.5))+stat_summary(fun = median, color = "red", geom = "line", size=1)
+  gg4 <- data.frame(Fitted_value, Resivar)
+  plot1 <- ggplot(gg3,aes(x = Fitted_value, y = Residual)) + 
+    geom_point(aes(x = Fitted_value, y = Residual), size = 5, shape = 1) + 
+    labs(x = "Fitted values\n lm(Petal.Length~Species)", y = "Residuals", title = "Residuals vs Fitted") + 
+    theme(panel.grid.major = element_blank(),panel.grid.minor = element_blank() + panel.background = element_blank(), axis.line = element_line(colour = "black"))+
+    theme(plot.title = element_text(hjust = 0.5)) + 
+    stat_summary(fun = median, color = "red", geom = "line", size=1)
+    
+  print(plot1)
+  
+  plot2 <- ggplot(gg4, aes(x = Fitted_value, y = Resivar)) + 
+    geom_point(size = 5, shape = 1) + 
+    labs(x = "Fitted values\n lm(Pental.Length~Species)", y = expression(sqrt("|Standardized residuals|")) ,    title = "Scale-Location") + 
+    theme(plot.title = element_text(hjust = 0.5)) + 
+    stat_summary(fun = mean, color = "red", geom = "line", size=1)  +
+    theme_classic()
+  print(plot2) 
 }
