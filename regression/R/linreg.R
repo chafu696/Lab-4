@@ -31,7 +31,7 @@ linreg <- function(formula, data){
   tcoe <- reco / sqrt(vreco1)
   pcoe <- pt(tcoe, dfre)
   rtex <- paste(deparse(match.call()))
-  v <- list(a1 = round(t(reco), 2), a2 = round(fval, 2), a3 = round(resi, 2), a4 = round(reva, 2), a5 = round(vreco, 2), a6 = round(vreco1, 2), a7 = t(tcoe), a8 = t(pcoe), a9 = rtex)
+  v <- list(a1 = t(reco), a2 = fval, a3 = resi, a4 =reva, a5 = vreco, a6 = vreco1, a7 = t(tcoe), a8 = t(pcoe), a9 = rtex)
 attr(v, "class") <- "linreg"
   return(v)
 }
@@ -54,17 +54,22 @@ plot.linreg <- function(x){
   plot1 <- ggplot(gg3,aes(x = Fitted_value, y = Residual)) + 
     geom_point(aes(x = Fitted_value, y = Residual), size = 5, shape = 1) + 
     labs(x = "Fitted values\n lm(Petal.Length~Species)", y = "Residuals", title = "Residuals vs Fitted") + 
-    theme(panel.grid.major = element_blank(),panel.grid.minor = element_blank() + panel.background = element_blank(), axis.line = element_line(colour = "black"))+
+    theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank()) +
     theme(plot.title = element_text(hjust = 0.5)) + 
     stat_summary(fun = median, color = "red", geom = "line", size=1)
-    
-  print(plot1)
+    print(plot1)
   
-  plot2 <- ggplot(gg4, aes(x = Fitted_value, y = Resivar)) + 
+    plot2 <- ggplot(gg4, aes(x = Fitted_value, y = Resivar)) + 
     geom_point(size = 5, shape = 1) + 
     labs(x = "Fitted values\n lm(Pental.Length~Species)", y = expression(sqrt("|Standardized residuals|")) ,    title = "Scale-Location") + 
+    theme(panel.grid.major = element_blank(),panel.grid.minor = element_blank()) +
     theme(plot.title = element_text(hjust = 0.5)) + 
-    stat_summary(fun = mean, color = "red", geom = "line", size=1)  +
-    theme_classic()
-  print(plot2) 
+    stat_summary(fun = mean, color = "red", geom = "line", size=1)
+    print(plot2) 
+}
+resid.linreg <- function(x){
+  cat(x$a3, "\n")
+}
+pred.linreg <- function(x){
+  cat(x$a2, "\n")
 }
