@@ -22,3 +22,7 @@ This is a description of linreg function
 
 Two arguments with a formula and a data are handled by this function.
 }
+\examples{
+linreg(Petal.Length ~ Species, data = iris)
+
+}

@@ -15,8 +15,7 @@
 #'
 #'@usage linreg(formula, data)
 #'
-#'@example
-#' linreg(Petal.Length ~ Species, data = iris)
+#'@examples linreg(Petal.Length ~ Species, data = iris)
 #'
 #'@import ggplot2
 #'
@@ -39,7 +38,7 @@ linreg <- function(formula, data){
   vreco1 <- diag(vreco)
   tcoe <- reco / sqrt(vreco1)
   pcoe <- pt(tcoe, dfre)
-  rtex <- paste(deparse(match.call()))
+  rtex <- match.call()
   v <- list(a1 = t(reco), a2 = fval, a3 = resi, a4 =reva, a5 = vreco, a6 = vreco1, a7 = t(tcoe), a8 = t(pcoe), a9 = rtex, a10 = dfre)
 attr(v, "class") <- "linreg"
   return(v)
@@ -48,11 +47,10 @@ attr(v, "class") <- "linreg"
 linlist <- linreg(Petal.Length ~ Species, data = iris)
 
 print.linreg <- function(x){
-  coeff <- x$a1
   cat("Call:", "\n")
-  cat(x$a9, "\n")
+  print(x$a9)
   cat("Coefficients:", "\n")
-  print(coeff)
+  print(x$a1)
 }
 
 plot.linreg <- function(x){
@@ -74,7 +72,7 @@ plot.linreg <- function(x){
   
   plot1 <- ggplot(gg3,aes(x = Fitted_value, y = Residual)) +
     geom_point(aes(x = Fitted_value, y = Residual), size = 5, shape = 1) +
-    labs(x = "Fitted values\n lm(Petal.Length~Species)", y = "Residuals", title = "Residuals vs Fitted") +
+    labs(x = "Fitted values", y = "Residuals", title = "Residuals vs Fitted") +
     theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank()) +
     theme(plot.title = element_text(hjust = 0.5)) +
     stat_summary(fun = median, color = "red", geom = "line", size=1) +
@@ -83,11 +81,11 @@ plot.linreg <- function(x){
   
   plot2 <- ggplot(gg4, aes(x = Fitted_value, y = Resivar)) +
     geom_point(size = 5, shape = 1) +
-    labs(x = "Fitted values\n lm(Petal.Length~Species)", y = expression(sqrt("|Standardized residuals|")) ,    title = "Scale-Location") +
+    labs(x = "Fitted values", y = expression(sqrt("|Standardized residuals|")) ,    title = "Scale-Location") +
     theme(panel.grid.major = element_blank(),panel.grid.minor = element_blank()) +
     theme(plot.title = element_text(hjust = 0.5)) +
     stat_summary(fun = mean, color = "red", geom = "line", size=1) +
-    geom_text(aes(label=outliers1), hjust=1, na.rm=TRUE)
+    geom_text(aes(label=outliers2), hjust=1, na.rm=TRUE)
   print(plot2)
 }
 resid <- function(x){
@@ -108,10 +106,9 @@ coef.linreg <- function(x){
 }
 
 summary.linreg <- function(x){
-  emotvect <- c("","","")
-  mat1 <- (cbind(t(x$a1), sqrt(x$a6), t(x$a7), t(x$a8), emotvect))
-  print.table(mat1)
-  cat(sqrt(x$a4), "\n")
-  cat('on')
-  cat(x$a10, "\n")
+  signif_code <- ifelse(x$a8<=0.001, "***", 
+                        ifelse(x$a8<=0.01, "**", 
+                               ifelse(x$a8<=0.1, "***", "***")))
+  print(data.frame(t(x$a1),sqrt(x$a6),t(x$a7),t(x$a8),t(signif_code)))
+  cat("\nResidual standard error:", sqrt(x$a4), "on", x$a10, "degrees of freedom")
 }
