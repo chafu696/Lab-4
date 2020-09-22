@@ -10,11 +10,7 @@ License: GPL-3
 Depends: R(>= 4.0.0)
 Encoding: UTF-8
 LazyData: true
-<<<<<<< HEAD
 RoxygenNote: 7.1.1
 Suggests: 
     testthat
-=======
-Suggests: testthat
-RoxygenNote: 7.1.1
->>>>>>> 82647f970cf40bf545232f2e51878f4eb9912ed1
+
