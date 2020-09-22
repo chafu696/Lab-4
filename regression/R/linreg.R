@@ -13,12 +13,14 @@
 #'
 #'@return An object with of class linreg as an S3 class
 #'
-#'@usage linreg(y ~ x, data)
+#'@usage linreg(formula, data)
 #'
 #'@example
 #' linreg(Petal.Length ~ Species, data = iris)
 #'
 #'@import ggplot2
+#'
+#'@importFrom stats median model.matrix pt quantile sd
 #'
 #'@export
 
@@ -72,7 +74,7 @@ plot.linreg <- function(x){
   
   plot1 <- ggplot(gg3,aes(x = Fitted_value, y = Residual)) +
     geom_point(aes(x = Fitted_value, y = Residual), size = 5, shape = 1) +
-    labs(x = "Fitted values\n linreg(Petal.Length~Species)", y = "Residuals", title = "Residuals vs Fitted") +
+    labs(x = "Fitted values\n lm(Petal.Length~Species)", y = "Residuals", title = "Residuals vs Fitted") +
     theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank()) +
     theme(plot.title = element_text(hjust = 0.5)) +
     stat_summary(fun = median, color = "red", geom = "line", size=1) +
