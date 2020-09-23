@@ -13,5 +13,7 @@ LazyData: true
 Imports: ggplot2
 RoxygenNote: 7.1.1
 Suggests:
-    testthat
-
+    testthat,
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr

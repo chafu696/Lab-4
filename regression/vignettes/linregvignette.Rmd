@@ -1,0 +1,75 @@
+---
+title: "linregvignette"
+author: "Chao Fu & Michael Bailey"
+data: "r Sys.Date()"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{linregvignette}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(regression)
+```
+# Description
+Implement the linear regression algorithm as lm() and specified print out with S3 class.
+
+# Functions
+
+## linreg
+1. The function calculates the linear regression algorithm. 
+1. The return is an object containing a list data and the class of "linreg".
+
+## print()
+1. A method belongs to the class of "linreg".
+1. The return contains a linear expression as the arguments in linreg's function and it's coefficients.
+
+## plot()
+1. A method belongs to the class of "linreg".
+1. The return contains two graphs using ggplot2.
+1. The first graph is that x is Fitted values and y is Residuals. The second graph is that x is Fitted values and y is $\sqrt{|Standardized residuals|}.
+
+## resid()
+1. A method belongs to the class of "linreg".
+1. The return is the vector of residuals e.
+
+## pred()
+1. A method belongs to the class of "linreg".
+1. The return is the predicted values of y.
+
+## coef()
+1. A method belongs to the class of "linreg".
+1. The return is the coefficients as a named vector.
+
+## summary()
+1. A method belongs to the class of "linreg".
+1. The return contains a table with coefficients, their standard error, t-value, p-value and a sentence with the estimate of \sigma and the degree of freedom in the model as the summary().
+
+# Usage
+
+## Install
+
+```{r}
+devtools::install_github("chafu696/Lab-4")
+
+```
+
+## Example
+```{r}
+linlist <- linreg(Petal.Length ~ Species, data = iris)
+print(linlist)
+plot(linlist)
+resid(linlist)
+pred(linlist)
+coef(linlist)
+summary(linlist)
+```
+

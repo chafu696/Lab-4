@@ -44,7 +44,7 @@ attr(v, "class") <- "linreg"
   return(v)
 }
 
-linlist <- linreg(Petal.Length ~ Species, data = iris)
+#linlist <- linreg(Petal.Length ~ Species, data = iris)
 
 print.linreg <- function(x){
   cat("Call:", "\n")
@@ -61,7 +61,7 @@ plot.linreg <- function(x){
     Q1 <- quantile(c, probs=0.25)
     Q3 <- quantile(c, probs=0.75)
     IQR <- Q3-Q1
-    index <- ifelse(c > Q3+1.5*IQR, c, 
+    index <- ifelse(c > Q3+1.5*IQR, c,
                     ifelse(c < Q1-1.5*IQR, c, NA))
     return(index)
   }
@@ -69,7 +69,7 @@ plot.linreg <- function(x){
   outliers2 <- outliers(Resivar)
   gg3 <- data.frame(Fitted_value, Residual, outliers1)
   gg4 <- data.frame(Fitted_value, Resivar, outliers2)
-  
+
   plot1 <- ggplot(gg3,aes(x = Fitted_value, y = Residual)) +
     geom_point(aes(x = Fitted_value, y = Residual), size = 5, shape = 1) +
     labs(x = "Fitted values", y = "Residuals", title = "Residuals vs Fitted") +
@@ -78,7 +78,7 @@ plot.linreg <- function(x){
     stat_summary(fun = median, color = "red", geom = "line", size=1) +
     geom_text(aes(label=outliers1), hjust=1, na.rm=TRUE)
   print(plot1)
-  
+
   plot2 <- ggplot(gg4, aes(x = Fitted_value, y = Resivar)) +
     geom_point(size = 5, shape = 1) +
     labs(x = "Fitted values", y = expression(sqrt("|Standardized residuals|")) ,    title = "Scale-Location") +
@@ -92,22 +92,22 @@ resid <- function(x){
   UseMethod("resid")
 }
 resid.linreg <- function(x){
-  x$a3
+  print(x$a3)
 }
 pred <- function(x){
   UseMethod("pred")
 }
 pred.linreg <- function(x){
-  x$a2
+  print(x$a2)
 }
 
 coef.linreg <- function(x){
-  x$a1
+  print(x$a1)
 }
 
 summary.linreg <- function(x){
-  signif_code <- ifelse(x$a8<=0.001, "***", 
-                        ifelse(x$a8<=0.01, "**", 
+  signif_code <- ifelse(x$a8<=0.001, "***",
+                        ifelse(x$a8<=0.01, "**",
                                ifelse(x$a8<=0.1, "*", "")))
   print(data.frame(t(x$a1),sqrt(x$a6),t(x$a7),t(x$a8),t(signif_code)))
   cat("\nResidual standard error:", sqrt(x$a4), "on", x$a10, "degrees of freedom")
