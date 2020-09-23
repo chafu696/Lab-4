@@ -1,6 +1,6 @@
 ---
 title: "linregvignette"
-author: "Chao Fu & Michael Bailey"
+author: "Chao Fu & Michael Bailey" 
 data: "r Sys.Date()"
 output: rmarkdown::html_vignette
 vignette: >
@@ -16,7 +16,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r setup}
+```{r}
 library(regression)
 ```
 # Description
@@ -57,13 +57,14 @@ Implement the linear regression algorithm as lm() and specified print out with S
 
 ## Install
 
-```{r}
+```{r, eval=FALSE}
 devtools::install_github("chafu696/Lab-4")
 
 ```
 
 ## Example
-```{r}
+
+```{r, eval=FALSE}
 linlist <- linreg(Petal.Length ~ Species, data = iris)
 print(linlist)
 plot(linlist)
