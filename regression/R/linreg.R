@@ -1,6 +1,6 @@
 #'This is a description of linreg function
-#
-#'@title linreg
+#'
+#'
 #'@name linreg
 #'
 #'@description This function creates a multiple regression model to handle linear regression.
@@ -46,6 +46,8 @@ attr(v, "class") <- "linreg"
 
 #linlist <- linreg(Petal.Length ~ Species, data = iris)
 
+#'@rdname print
+#'@export
 print.linreg <- function(x){
   cat("Call:", "\n")
   print(x$a9)
@@ -53,6 +55,8 @@ print.linreg <- function(x){
   print(x$a1)
 }
 
+#'@rdname plot
+#'@export
 plot.linreg <- function(x){
   Fitted_value <- x$a2
   Residual <- x$a3
@@ -88,19 +92,26 @@ plot.linreg <- function(x){
     geom_text(aes(label=outliers2), hjust=1, na.rm=TRUE)
   print(plot2)
 }
+
+#'@rdname resid
+#'@export
 resid <- function(x){
   UseMethod("resid")
 }
 resid.linreg <- function(x){
   print(x$a3)
 }
+
+#'@rdname pred
+#'@export
 pred <- function(x){
   UseMethod("pred")
 }
 pred.linreg <- function(x){
   print(x$a2)
 }
-
+#'@rdname coef
+#'@export
 coef.linreg <- function(x){
   print(x$a1)
 }

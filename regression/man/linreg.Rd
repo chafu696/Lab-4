@@ -2,7 +2,7 @@
 % Please edit documentation in R/linreg.R
 \name{linreg}
 \alias{linreg}
-\title{linreg}
+\title{This is a description of linreg function}
 \usage{
 linreg(formula, data)
 }
@@ -18,8 +18,6 @@ An object with of class linreg as an S3 class
 This function creates a multiple regression model to handle linear regression.
 }
 \details{
-This is a description of linreg function
-
 Two arguments with a formula and a data are handled by this function.
 }
 \examples{
