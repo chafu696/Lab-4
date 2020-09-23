@@ -37,7 +37,7 @@ linreg <- function(formula, data){
   vreco <- reva * solve(t(mat2) %*% mat2)
   vreco1 <- diag(vreco)
   tcoe <- reco / sqrt(vreco1)
-  pcoe <- pt(tcoe, dfre)
+  pcoe <- 2*pt(-abs(tcoe), dfre)
   rtex <- match.call()
   v <- list(a1 = t(reco), a2 = fval, a3 = resi, a4 =reva, a5 = vreco, a6 = vreco1, a7 = t(tcoe), a8 = t(pcoe), a9 = rtex, a10 = dfre)
 attr(v, "class") <- "linreg"
@@ -108,7 +108,7 @@ coef.linreg <- function(x){
 summary.linreg <- function(x){
   signif_code <- ifelse(x$a8<=0.001, "***", 
                         ifelse(x$a8<=0.01, "**", 
-                               ifelse(x$a8<=0.1, "***", "***")))
+                               ifelse(x$a8<=0.1, "*", "")))
   print(data.frame(t(x$a1),sqrt(x$a6),t(x$a7),t(x$a8),t(signif_code)))
   cat("\nResidual standard error:", sqrt(x$a4), "on", x$a10, "degrees of freedom")
 }
