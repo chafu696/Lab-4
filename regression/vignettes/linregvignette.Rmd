@@ -70,7 +70,6 @@ plot(linlist)
 resid(linlist)
 pred(linlist)
 coef(linlist)
-
 summary(linlist)
 ```
 
