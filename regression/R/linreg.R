@@ -44,6 +44,29 @@ attr(v, "class") <- "linreg"
   return(v)
 }
 
+# I am unsure on how to include fonts in a package - it doesn't just require extrafonts,
+# but also requires importing and configuring fonts to be found by R,
+# which takes several minutes, else ggplot2 will throw warnings.
+#'@rdname theme_liu
+#'@export
+theme_liu <- function() {
+  theme_classic() %+replace%
+    theme(
+#     text = element_text(family="Georgia"),
+      panel.border = element_rect(colour= "black", fill = NA),
+      plot.background = element_rect(fill = "#b9eef1"),
+      plot.title = element_text(size = 20,
+                                face = "bold",
+                                vjust = 2),
+#                               family = "Calibri"),
+      axis.title = element_text(size = 12),               
+      axis.text = element_text(size = 10),
+      legend.background = element_rect(fill="White")
+    )
+}
+
+
+
 #linlist <- linreg(Petal.Length ~ Species, data = iris)
 
 #'@rdname print
@@ -77,8 +100,7 @@ plot.linreg <- function(x){
   plot1 <- ggplot(gg3,aes(x = Fitted_value, y = Residual)) +
     geom_point(aes(x = Fitted_value, y = Residual), size = 5, shape = 1) +
     labs(x = "Fitted values", y = "Residuals", title = "Residuals vs Fitted") +
-    theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank()) +
-    theme(plot.title = element_text(hjust = 0.5)) +
+    theme_liu() +
     stat_summary(fun = median, color = "red", geom = "line", size=1) +
     geom_text(aes(label=outliers1), hjust=1, na.rm=TRUE)
   print(plot1)
@@ -86,8 +108,7 @@ plot.linreg <- function(x){
   plot2 <- ggplot(gg4, aes(x = Fitted_value, y = Resivar)) +
     geom_point(size = 5, shape = 1) +
     labs(x = "Fitted values", y = expression(sqrt("|Standardized residuals|")) ,    title = "Scale-Location") +
-    theme(panel.grid.major = element_blank(),panel.grid.minor = element_blank()) +
-    theme(plot.title = element_text(hjust = 0.5)) +
+    theme_liu() +
     stat_summary(fun = mean, color = "red", geom = "line", size=1) +
     geom_text(aes(label=outliers2), hjust=1, na.rm=TRUE)
   print(plot2)
@@ -98,6 +119,8 @@ plot.linreg <- function(x){
 resid <- function(x){
   UseMethod("resid")
 }
+#'@rdname resid
+#'@export
 resid.linreg <- function(x){
   print(x$a3)
 }
@@ -107,6 +130,8 @@ resid.linreg <- function(x){
 pred <- function(x){
   UseMethod("pred")
 }
+#'@rdname resid
+#'@export
 pred.linreg <- function(x){
   print(x$a2)
 }
@@ -116,6 +141,8 @@ coef.linreg <- function(x){
   print(x$a1)
 }
 
+#'@rdname summary
+#'@export
 summary.linreg <- function(x){
   signif_code <- ifelse(x$a8<=0.001, "***",
                         ifelse(x$a8<=0.01, "**",
